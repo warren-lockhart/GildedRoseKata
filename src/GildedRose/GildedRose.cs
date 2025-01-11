@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRoseKata
 {
@@ -34,29 +35,27 @@ namespace GildedRoseKata
                 }
             }
             else
-            {
-                if (item.Quality < 50)
+            {   // Item is Aged Brie or Backstage pass.
+                if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
-                    item.Quality = item.Quality + 1;
 
-                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+                    if (item.SellIn < 5)
                     {
-                        if (item.SellIn < 10)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
-
-                        if (item.SellIn < 5)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
+                        IncreaseQuality(item, 3);
                     }
+                    else if (item.SellIn < 10)
+                    {
+                        IncreaseQuality(item, 2);
+                    }
+                    else
+                    {
+                        IncreaseQuality(item, 1);
+                    }
+                }
+                else
+                {
+                    // Aged Brie
+                    IncreaseQuality(item, 1);
                 }
             }
 
@@ -81,11 +80,16 @@ namespace GildedRoseKata
                 }
                 else
                 {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-                    }
+                    IncreaseQuality(item, 1);
                 }
+            }
+        }
+
+        private static void IncreaseQuality(Item item, int amount)
+        {
+            if (item.Quality < 50)
+            {
+                item.Quality = Math.Min(item.Quality + amount, 50);
             }
         }
 
