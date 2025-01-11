@@ -1,13 +1,9 @@
-﻿
-using GildedRoseKata;
-
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-
+using GildedRoseKata;
 using VerifyXunit;
-
 using Xunit;
 
 namespace GildedRoseTests
@@ -15,15 +11,18 @@ namespace GildedRoseTests
     public class ApprovalTest
     {
         [Fact]
-        public Task ThirtyDays()
+        public Task ProgramMain_ThirtyDays_OutputVerified()
         {
+            // Arrange
             var fakeoutput = new StringBuilder();
             Console.SetOut(new StringWriter(fakeoutput));
             Console.SetIn(new StringReader("a\n"));
 
-            Program.Main(new string[] { "30" });
+            // Act
+            Program.Main(["30"]);
             var output = fakeoutput.ToString();
 
+            // Assert
             return Verifier.Verify(output);
         }
     }

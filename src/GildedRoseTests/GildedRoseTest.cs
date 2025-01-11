@@ -7,12 +7,18 @@ namespace GildedRoseTests
     public class GildedRoseTest
     {
         [Fact]
-        public void foo()
+        public void UpdateQuality_ItemWithName_NameIsPreserved()
         {
-            IList<Item> Items = new List<Item> { new Item { Name = "foo", SellIn = 0, Quality = 0 } };
+            // Arrange
+            var name = "testName";
+            IList<Item> Items = new List<Item> { new Item { Name = name, SellIn = 0, Quality = 0 } };
             GildedRose app = new GildedRose(Items);
+
+            // Act
             app.UpdateQuality();
-            Assert.Equal("fixme", Items[0].Name);
+
+            // Assert
+            Assert.Equal(name, Items[0].Name);
         }
     }
 }
