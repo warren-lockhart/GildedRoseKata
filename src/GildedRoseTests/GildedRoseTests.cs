@@ -47,7 +47,7 @@ namespace GildedRoseTests
         public void UpdateQuality_SellByDatePassed_QualityDegradesTwiceAsFast(string itemName)
         {
             // Arrange
-            List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = -1, Quality = 4 }
+            List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = 0, Quality = 4 }
             };
             GildedRose app = new GildedRose(Items);
 
@@ -97,7 +97,7 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Backstage passes to a TAFKAL80ETC concert";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 9, Quality = 0 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 10, Quality = 0 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
@@ -114,7 +114,7 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Backstage passes to a TAFKAL80ETC concert";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 4, Quality = 0 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 5, Quality = 0 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
@@ -131,7 +131,7 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Backstage passes to a TAFKAL80ETC concert";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = -1, Quality = 0 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 0, Quality = 0 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
