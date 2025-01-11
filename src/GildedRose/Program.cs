@@ -7,7 +7,7 @@ namespace GildedRoseKata
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("OMGHAI!");
+            Console.WriteLine("Welcome to Gilded Rose!");
 
             IList<Item> Items = new List<Item>{
                 new Item {Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20},
