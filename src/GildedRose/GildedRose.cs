@@ -27,13 +27,21 @@ namespace GildedRoseKata
             if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
             {
                 DecreaseQuality(item);
+
+                if (item.SellIn < 0)
+                {
+                    DecreaseQuality(item);
+                }
             }
             else
             {   // Item is Aged Brie or Backstage pass.
                 if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
-
-                    if (item.SellIn < 5)
+                    if (item.SellIn < 0)
+                    {
+                        item.Quality = 0;
+                    }
+                    else if (item.SellIn < 5)
                     {
                         IncreaseQuality(item, 3);
                     }
@@ -50,28 +58,11 @@ namespace GildedRoseKata
                 {
                     // Aged Brie
                     IncreaseQuality(item, 1);
-                }
-            }
-
-            if (item.SellIn < 0)
-            {
-                if (item.Name != "Aged Brie")
-                {
-                    if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
+                    if (item.SellIn < 0)
                     {
-                        DecreaseQuality(item);
+                        // An additional increase by 1 (total increase by 2). Not in the spec!
+                        IncreaseQuality(item, 1);
                     }
-                    else
-                    {
-                        // Backstage pass. Quality drops to zero.
-                        item.Quality = 0;
-                    }
-                }
-                else
-                {
-                    // Aged Brie
-                    // An additional increase by 1 (total increase by 2). Not in the spec!
-                    IncreaseQuality(item, 1);
                 }
             }
         }
