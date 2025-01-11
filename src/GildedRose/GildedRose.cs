@@ -26,13 +26,7 @@ namespace GildedRoseKata
 
             if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
             {
-                if (item.Quality > 0)
-                {
-                    if (item.Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        item.Quality = item.Quality - 1;
-                    }
-                }
+                DecreaseQuality(item);
             }
             else
             {   // Item is Aged Brie or Backstage pass.
@@ -65,21 +59,18 @@ namespace GildedRoseKata
                 {
                     if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
                     {
-                        if (item.Quality > 0)
-                        {
-                            if (item.Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                item.Quality = item.Quality - 1;
-                            }
-                        }
+                        DecreaseQuality(item);
                     }
                     else
                     {
+                        // Backstage pass. Quality drops to zero.
                         item.Quality = 0;
                     }
                 }
                 else
                 {
+                    // Aged Brie
+                    // An additional increase by 1 (total increase by 2). Not in the spec!
                     IncreaseQuality(item, 1);
                 }
             }
@@ -90,6 +81,14 @@ namespace GildedRoseKata
             if (item.Quality < 50)
             {
                 item.Quality = Math.Min(item.Quality + amount, 50);
+            }
+        }
+
+        private static void DecreaseQuality(Item item)
+        {
+            if (item.Quality > 0 && item.Name != "Sulfuras, Hand of Ragnaros")
+            {
+                item.Quality--;
             }
         }
 

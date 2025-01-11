@@ -110,7 +110,7 @@ namespace GildedRoseTests
         // "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches
         // Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less
         [Fact]
-        public void UpdateQuality_BackstagePassLessThanFiveDaysBeforeSellIn_QualityIncreasesBy3()
+        public void UpdateQuality_BackstagePassLessThanFiveDaysBeforeSellIn_QualityIncreasesByThree()
         {
             // Arrange
             var name = "Backstage passes to a TAFKAL80ETC concert";
