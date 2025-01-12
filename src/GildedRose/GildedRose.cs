@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using GildedRoseKata.Enums;
 
 namespace GildedRoseKata
 {
     public class GildedRose
     {
+        private static List<string> BackstagePasses = ["Backstage passes to a TAFKAL80ETC concert"];
+        private static List<string> ImprovingItems = ["Aged Brie"];
+        private static List<string> DegradingItems = ["+5 Dexterity Vest", "Elixir of the Mongoose"];
+        private static List<string> LegendaryItems = ["Sulfuras, Hand of Ragnaros"];
+
         IList<Item> Items;
 
         public GildedRose(IList<Item> Items)
@@ -22,25 +28,29 @@ namespace GildedRoseKata
 
         private static void UpdateItem(Item item)
         {
+            var itemType = GetItemType(item.Name);
+
+            if (itemType == ItemType.Legendary)
+            {
+                return;
+            }
+
             UpdateSellIn(item);
 
-            if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
+            switch (itemType)
             {
-                // TODO: A branch will be needed for the new item type.
-                // TODO: Where do legendary items fit into the decision making?
-
-                UpdateDegradingItem(item);
-            }
-            else
-            {   // Item is Aged Brie or Backstage pass.
-                if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-                {
+                case ItemType.BackstagePass:
                     UpdateBackstagePass(item);
-                }
-                else
-                {
+                    break;
+                case ItemType.Improving:
                     UpdateImprovingItem(item);
-                }
+                    break;
+                case ItemType.Degrading:
+                    UpdateDegradingItem(item);
+                    break;
+                default:
+                    UpdateDegradingItem(item);
+                    break;
             }
         }
 
@@ -97,7 +107,7 @@ namespace GildedRoseKata
 
         private static void DecreaseQuality(Item item, int amount)
         {
-            if (item.Quality > 0 && item.Name != "Sulfuras, Hand of Ragnaros")
+            if (item.Quality > 0)
             {
                 item.Quality = Math.Max(0, item.Quality - amount);
             }
@@ -105,10 +115,32 @@ namespace GildedRoseKata
 
         private static void UpdateSellIn(Item item)
         {
-            if (item.Name != "Sulfuras, Hand of Ragnaros")
+            item.SellIn--;
+        }
+
+        private static ItemType GetItemType(string name)
+        {
+            if (LegendaryItems.Contains(name))
             {
-                item.SellIn--;
+                return ItemType.Legendary;
             }
+
+            if (BackstagePasses.Contains(name))
+            {
+                return ItemType.BackstagePass;
+            }
+
+            if (ImprovingItems.Contains(name))
+            {
+                return ItemType.Improving;
+            }
+
+            if (DegradingItems.Contains(name))
+            {
+                return ItemType.Degrading;
+            }
+
+            return ItemType.Degrading;
         }
     }
 }
