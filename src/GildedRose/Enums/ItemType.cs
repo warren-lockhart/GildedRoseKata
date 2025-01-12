@@ -5,6 +5,7 @@
         Degrading,
         Legendary,
         BackstagePass,
-        Improving
+        Improving,
+        Conjured
     }
 }

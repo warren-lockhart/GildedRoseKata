@@ -6,7 +6,7 @@ using Xunit;
 namespace GildedRoseTests
 {
     [ExcludeFromCodeCoverage]
-    public class GildedRoseTests
+    public sealed class GildedRoseTests
     {
         [Fact]
         public void UpdateQuality_ItemWithName_NameIsPreserved()
@@ -58,10 +58,46 @@ namespace GildedRoseTests
             Assert.Equal(2, Items[0].Quality);
         }
 
+        // "Conjured" items degrade in Quality twice as fast as normal items
+        [Fact]
+        public void UpdateQuality_ConjuredItem_QualityDegradesTwiceAsFastAsNormalItems()
+        {
+            // Arrange
+            var itemName = "Conjured Mana Cake";
+            List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = 2, Quality = 4 }
+            };
+            GildedRose app = new GildedRose(Items);
+
+            // Act
+            app.UpdateQuality();
+
+            // Assert
+            Assert.Equal(2, Items[0].Quality);
+        }
+
+        // "Conjured" items degrade in Quality twice as fast as normal items
+        // The implied double rate again, once sell by has passed.
+        [Fact]
+        public void UpdateQuality_ConjuredItemPastSellIn_QualityDegradesTwiceAsFast()
+        {
+            // Arrange
+            var itemName = "Conjured Mana Cake";
+            List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = -1, Quality = 4 }
+            };
+            GildedRose app = new GildedRose(Items);
+
+            // Act
+            app.UpdateQuality();
+
+            // Assert
+            Assert.Equal(0, Items[0].Quality);
+        }
+
         // The Quality of an item is never negative
         [Theory]
         [InlineData("+5 Dexterity Vest")]
         [InlineData("Elixir of the Mongoose")]
+        [InlineData("Conjured Mana Cake")]
         public void UpdateQuality_DegradingItem_QualityNeverNegative(string itemName)
         {
             List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = 4, Quality = 0 }};
@@ -148,7 +184,7 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Backstage passes to a TAFKAL80ETC concert";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 0, Quality = 0 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 0, Quality = 50 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
@@ -164,7 +200,7 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Sulfuras, Hand of Ragnaros";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 1, Quality = 0 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 1, Quality = 80 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
@@ -180,14 +216,14 @@ namespace GildedRoseTests
         {
             // Arrange
             var name = "Sulfuras, Hand of Ragnaros";
-            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 1, Quality = 4 } };
+            List<Item> Items = new List<Item> { new Item { Name = name, SellIn = 1, Quality = 80 } };
             GildedRose app = new GildedRose(Items);
 
             // Act
             app.UpdateQuality();
 
             // Assert
-            Assert.Equal(4, Items[0].Quality);
+            Assert.Equal(80, Items[0].Quality);
         }
 
         // The Quality of an item is never more than 50

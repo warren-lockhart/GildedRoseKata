@@ -39,6 +39,9 @@ namespace GildedRoseKata
                 case ItemType.Improving:
                     ItemManager.UpdateImprovingItem(item);
                     break;
+                case ItemType.Conjured:
+                    ItemManager.UpdateConjuredItem(item);
+                    break;
                 case ItemType.Degrading:
                     ItemManager.UpdateDegradingItem(item);
                     break;
