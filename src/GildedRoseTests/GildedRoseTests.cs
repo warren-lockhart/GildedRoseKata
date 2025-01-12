@@ -90,6 +90,23 @@ namespace GildedRoseTests
             Assert.Equal(1, Items[0].Quality);
         }
 
+        // The Quality of an improving, non-backstage-pass item increases by 2 when sell by has passed
+        // Not explicitly documented in requirement, but implied
+        [Fact]
+        public void UpdateQuality_IncreasingQualityItemPastSellIn_QualityIncreasesByTwo()
+        {
+            // Arrange
+            var itemName = "Aged Brie";
+            List<Item> Items = new List<Item> { new Item { Name = itemName, SellIn = -1, Quality = 2 } };
+            GildedRose app = new GildedRose(Items);
+
+            // Act
+            app.UpdateQuality();
+
+            // Assert
+            Assert.Equal(4, Items[0].Quality);
+        }
+
         // "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches
         // Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less
         [Fact]

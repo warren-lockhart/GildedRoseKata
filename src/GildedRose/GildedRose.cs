@@ -77,8 +77,6 @@ namespace GildedRoseKata
         {
             if (item.SellIn < 0)
             {
-                // TODO: This requirement is not captured in the specification.
-                // Add a unit test for it
                 IncreaseQuality(item, 2);
                 return;
             }
