@@ -1,88 +1,53 @@
 ﻿using System.Collections.Generic;
+using GildedRoseKata.Enums;
 
 namespace GildedRoseKata
 {
     public class GildedRose
     {
-        IList<Item> Items;
-        public GildedRose(IList<Item> Items)
+        private IList<Item> Items;
+
+        public GildedRose(IList<Item> items)
         {
-            this.Items = Items;
+            this.Items = items;
         }
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            foreach (Item item in Items)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                {
-                    if (Items[i].Quality > 0)
-                    {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            Items[i].Quality = Items[i].Quality - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Items[i].Quality < 50)
-                    {
-                        Items[i].Quality = Items[i].Quality + 1;
+                UpdateItem(item);
+            }
+        }
 
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].SellIn < 11)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
+        private static void UpdateItem(Item item)
+        {
+            var itemType = ItemManager.GetItemType(item.Name);
 
-                            if (Items[i].SellIn < 6)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
+            if (itemType == ItemType.Legendary)
+            {
+                return;
+            }
 
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                {
-                    Items[i].SellIn = Items[i].SellIn - 1;
-                }
+            ItemManager.UpdateSellIn(item);
 
-                if (Items[i].SellIn < 0)
-                {
-                    if (Items[i].Name != "Aged Brie")
-                    {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (Items[i].Quality < 50)
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
-                    }
-                }
+            switch (itemType)
+            {
+                case ItemType.BackstagePass:
+                    ItemManager.UpdateBackstagePass(item);
+                    break;
+                case ItemType.Improving:
+                    ItemManager.UpdateImprovingItem(item);
+                    break;
+                case ItemType.Conjured:
+                    ItemManager.UpdateConjuredItem(item);
+                    break;
+                case ItemType.Degrading:
+                    ItemManager.UpdateDegradingItem(item);
+                    break;
+                default:
+                    ItemManager.UpdateDegradingItem(item);
+                    break;
             }
         }
     }
